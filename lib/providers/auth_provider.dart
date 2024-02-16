@@ -9,11 +9,17 @@ import 'package:shopping_app/services/auth_services.dart';
 
 class AuthProvider with ChangeNotifier {
   // late UserModel user;
+  bool isloading = false;
   static const userid = "id";
   static const userName = 'name';
   static const useremail = 'email';
   String? _token;
   String? get gettoken => _token;
+  int? _userid;
+  int? get getuserid1 => _userid;
+  int? _CurrentState;
+  int? get getcurrentState => _CurrentState;
+
   static const TOKEN = "TOKEN";
   AuthProvider() {
     getToken();
@@ -49,6 +55,25 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
+  Future<int> getCurrentState({required int id}) async {
+    isloading = true;
+    notifyListeners();
+    final response = await http
+        .get(Uri.parse('${AuthServices.linkusersgetcurrentstate}/$id'));
+
+    if (response.statusCode == 200) {
+      isloading = false;
+      notifyListeners();
+      final jsonData = json.decode(response.body);
+      _CurrentState = jsonData['currentstate'];
+    } else {
+      isloading = false;
+      notifyListeners();
+      print('Unexpected error: ${response.statusCode}');
+    }
+    return _CurrentState!;
+  }
+
   Future<void> setToken({required String token}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(TOKEN, token);
@@ -57,7 +82,7 @@ class AuthProvider with ChangeNotifier {
 
   Future<String?> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    _token = prefs.getString(TOKEN) ;
+    _token = prefs.getString(TOKEN);
     notifyListeners();
     return _token;
   }
@@ -86,6 +111,13 @@ class AuthProvider with ChangeNotifier {
   //     "id": id,
   //   };
   // }
+  Future<int?> getUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    int userId = prefs.getInt("id") ?? 0;
+    print(userid);
+    return userId;
+  }
 
   Future<void> removeData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

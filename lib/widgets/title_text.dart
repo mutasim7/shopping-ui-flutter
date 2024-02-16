@@ -17,6 +17,8 @@ class TitlesTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
+      textAlign: TextAlign.right,
+
       label,
       maxLines: maxLines,
       // textAlign: TextAlign.justify,

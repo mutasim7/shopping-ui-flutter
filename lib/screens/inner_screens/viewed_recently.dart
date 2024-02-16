@@ -1,13 +1,10 @@
-import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopping_app/services/assets_manager.dart';
 import 'package:shopping_app/widgets/empty_bag.dart';
 import 'package:shopping_app/widgets/title_text.dart';
 
-
 import '../../providers/viewed_prod_provider.dart';
-import '../../widgets/products/product_widget.dart';
 
 class ViewedRecentlyScreen extends StatelessWidget {
   static const routName = '/ViewedRecentlyScreen';
@@ -45,20 +42,20 @@ class ViewedRecentlyScreen extends StatelessWidget {
                 ),
               ],
             ),
-            body: DynamicHeightGridView(
-              itemCount: viewedProvider.getviewedProdItems.length,
-              builder: ((context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ProductWidget(
-                    productId: viewedProvider.getviewedProdItems.values
-                        .toList()[index]
-                        .productId,
-                  ),
-                );
-              }),
-              crossAxisCount: 2,
-            ),
+            // body: DynamicHeightGridView(
+            //   itemCount: viewedProvider.getviewedProdItems.length,
+            //   builder: ((context, index) {
+            //     return Padding(
+            //       padding: const EdgeInsets.all(8.0),
+            //       child: ProductWidget(
+            //         productId: viewedProvider.getviewedProdItems.values
+            //             .toList()[index]
+            //             .productId,
+            //       ),
+            //     );
+            //   }),
+            //   crossAxisCount: 2,
+            // ),
           );
   }
 }

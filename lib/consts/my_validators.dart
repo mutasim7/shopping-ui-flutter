@@ -1,4 +1,12 @@
+import 'package:flutter/material.dart';
+
 class MyValidators {
+  static String? uploadProdTexts({String? value, String? toBeReturnedString}) {
+    if (value!.isEmpty) {
+      return toBeReturnedString;
+    }
+    return null;
+  }
   static String? displayNamevalidator(String? displayName) {
     if (displayName == null || displayName.isEmpty) {
       return 'Display name cannot be empty';
@@ -36,5 +44,29 @@ class MyValidators {
       return 'Passwords do not match';
     }
     return null;
+  }
+  static void showSnackBar({
+    required BuildContext context,
+    required String text,
+    required double fontSize,
+    required Color backgroundColor,
+  }) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.horizontal(
+            left: Radius.circular(15),
+            right: Radius.circular(15),
+          ),
+        ),
+        backgroundColor: backgroundColor,
+        content: Text(
+          text,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: fontSize, color: Colors.white),
+        ),
+        duration: const Duration(seconds: 5),
+      ),
+    );
   }
 }

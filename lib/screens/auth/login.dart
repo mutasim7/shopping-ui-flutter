@@ -2,17 +2,17 @@
 
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:shopping_app/Root_App_Screen.dart';
 import 'package:shopping_app/consts/my_validators.dart';
 import 'package:shopping_app/providers/auth_provider.dart';
-import 'package:shopping_app/root_screen.dart';
 import 'package:shopping_app/screens/auth/register.dart';
 import 'package:shopping_app/services/auth_services.dart';
 import 'package:shopping_app/widgets/app_name_text.dart';
-import 'package:shopping_app/widgets/auth/google_btn.dart';
 import 'package:shopping_app/widgets/subtitle_text.dart';
 import 'package:shopping_app/widgets/title_text.dart';
 
@@ -32,7 +32,6 @@ class _LoginScreenState extends State<LoginScreen> {
   late final _formKey = GlobalKey<FormState>();
   bool obscureText = true;
   bool isLoading = false;
-  
 
   @override
   void initState() {
@@ -80,6 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
           );
 
           if (response.statusCode == 200) {
+            FirebaseMessaging.instance.subscribeToTopic('users');
             setState(() {
               isLoading = false;
             });
@@ -90,20 +90,50 @@ class _LoginScreenState extends State<LoginScreen> {
             authProvider.getuserdata(token);
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => const RootScreen(),
+                builder: (context) =>  RootAppScreen(),
               ),
               (route) => false,
             );
-          } else if (response.statusCode == 401) {
-            final errorJson = json.decode(response.body);
-            var errorMessage = errorJson['message'];
-            print('Error: $errorMessage');
-          } else {
+          } else if (response.statusCode == 422) {
+            final jsonData = json.decode(response.body);
             setState(() {
               isLoading = false;
             });
-            // في حالة حدوث خطأ غير متوقع
-            print('Unexpected error: ${response.statusCode}');
+            String errorMessage = jsonData['error'];
+            print('حدثت مشكلة: $errorMessage');
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Center(
+                  child: Text(
+                    errorMessage,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+                backgroundColor: Colors.red,
+              ),
+            );
+          } else if (response.statusCode == 500) {
+            final jsonData = json.decode(response.body);
+            setState(() {
+              isLoading = false;
+            });
+            String errorMessage = jsonData['error'];
+            print('حدثت مشكلة: $errorMessage');
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Center(
+                  child: Text(
+                    errorMessage,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+                backgroundColor: Colors.red,
+              ),
+            );
+          } else {
+            setState(() {
+              isLoading = false; // تم إيقاف مؤشر التحميل بعد الانتهاء
+            });
           }
         } catch (e) {
           setState(() {
@@ -240,26 +270,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(
                         height: 16.0,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          height: kBottomNavigationBarHeight + 10,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Expanded(
-                                flex: 2,
-                                child: SizedBox(
-                                  height: kBottomNavigationBarHeight,
-                                  child: FittedBox(
-                                    child: GoogleButton(),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       ),
                       const SizedBox(
                         height: 16.0,

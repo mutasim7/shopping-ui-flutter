@@ -20,6 +20,7 @@ class SubtitleTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
+      textAlign: TextAlign.center,
       label,
       style: TextStyle(
         fontSize: fontSize,

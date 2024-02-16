@@ -5,6 +5,7 @@ class AssetsManager {
   static String bannersImagesPath = "assets/images/banners";
   static String categoriesImagesPath = "assets/images/categories";
   static String storesImagesPath = "assets/images/stores";
+  static String mapmarkImagesPath = "assets/images/mapmark";
 
 // general images
   static String forgotPassword = "$imagesPath/forgot_password.jpg";
@@ -29,10 +30,6 @@ class AssetsManager {
   static String orderBag = "$bagImagesPath/order.png";
   static String orderSvg = "$bagImagesPath/order_svg.png";
   static String wishlistSvg = "$bagImagesPath/wishlist_svg.png";
-  // Banners
-  static String banner1 = "$bannersImagesPath/banner1.png";
-  static String banner2 = "$bannersImagesPath/banner2.png";
-  static String banner4 = "$bannersImagesPath/banner4.png";
 
   // Categories path
   static String mobiles = "$categoriesImagesPath/mobiles.png";
@@ -43,13 +40,42 @@ class AssetsManager {
   static String cosmetics = "$categoriesImagesPath/cosmetics.png";
   static String shoes = "$categoriesImagesPath/shoes.png";
   static String pc = "$categoriesImagesPath/pc.png";
+  static String accessories = "$categoriesImagesPath/Accessories.png";
+  static String carparts = "$categoriesImagesPath/car-parts.png";
+  static String detergent = "$categoriesImagesPath/Detergent.png";
+  static String dietetics = "$categoriesImagesPath/dietetics.png";
+  static String furniture = "$categoriesImagesPath/furniture.png";
+  static String gams = "$categoriesImagesPath/gams.png";
+  static String gold = "$categoriesImagesPath/gold.png";
+  static String hlwiat = "$categoriesImagesPath/hlwiat.png";
+  static String houseware = "$categoriesImagesPath/Houseware.png";
+  static String internetNetworks =
+      "$categoriesImagesPath/Internet-networks.png";
+  static String meats = "$categoriesImagesPath/Meats.png";
+  static String oldfurniture = "$categoriesImagesPath/old-furniture.png";
+  static String othercategories = "$categoriesImagesPath/Other-categories.png";
+  static String paints = "$categoriesImagesPath/Paints.png";
+  static String perfumes = "$categoriesImagesPath/Perfumes.png";
+  static String pistachioroaster =
+      "$categoriesImagesPath/Pistachio-roaster.png";
+  static String printing = "$categoriesImagesPath/printing.png";
+  static String restaurants = "$categoriesImagesPath/Restaurants.png";
+  static String schoolSupplies = "$categoriesImagesPath/School-Supplies.png";
+  static String sportstshert = "$categoriesImagesPath/Sports-tshert.png";
+  static String toydoll = "$categoriesImagesPath/toy-doll.png";
+  static String vig = "$categoriesImagesPath/vig.png";
+  static String spices = "$categoriesImagesPath/spices.png";
+  static String plastic = "$categoriesImagesPath/Plastic.png";
+  static String motorcycleparts = "$categoriesImagesPath/Motorcycleparts.png";
 
   //map
-  static String mapmark = "$imagesPath/mapmark.webp";
-  static String mapmarknavy = "$imagesPath/mapmarknavy.png";
-  static String mapmarkred = "$imagesPath/mapmarkred.png";
-  static String mapmarkyellow = "$imagesPath/mapmarkyellow.png";
-  static String mapmarkgreen = "$imagesPath/mapmarkgreen.png";
+  static String mapmark = "$mapmarkImagesPath/mapmark.png";
+  static String mapmark1 = "$mapmarkImagesPath/mapmark1.png";
+  static String mapmark2 = "$mapmarkImagesPath/mapmark2.png";
+  static String mapmark4 = "$mapmarkImagesPath/mapmark4.png";
+  static String mapmark5 = "$mapmarkImagesPath/mapmark5.png";
+  static String afrinImg = "$imagesPath/afrin.jpg";
+  static String addressuser = "$imagesPath/address.png";
   //stores img
   static String storemobiles = "$storesImagesPath/storephone.png";
   static String storefashion = "$storesImagesPath/storeclothe.jpg";
@@ -60,6 +86,7 @@ class AssetsManager {
   static String storeshoes = "$storesImagesPath/storeshoes.png";
   static String storelaptop = "$storesImagesPath/storelaptop.jpg";
   static String storecandy = "$storesImagesPath/candy.png";
+  static String stores = "$storesImagesPath/stores.png";
 
   static late String name;
   static late String email;

@@ -25,9 +25,9 @@ class EmptyBagWidget extends StatelessWidget {
               width: double.infinity,
             ),
             const TitlesTextWidget(
-              label: "Whoops",
+              label: "عفواً",
               fontSize: 40,
-              color: Colors.red,
+              color: Colors.deepPurpleAccent,
             ),
             const SizedBox(
               height: 20,
@@ -41,24 +41,15 @@ class EmptyBagWidget extends StatelessWidget {
               height: 20,
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(10.0),
               child: SubtitleTextWidget(
                 label: subtitle,
                 fontWeight: FontWeight.w400,
-                fontSize: 20,
+                fontSize: 24,
               ),
             ),
             const SizedBox(
               height: 20,
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.all(20), elevation: 0),
-              onPressed: () {},
-              child: Text(
-                buttonText,
-                style: const TextStyle(fontSize: 22),
-              ),
             ),
           ],
         ),

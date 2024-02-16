@@ -1,5 +1,7 @@
+
+
 class AreasModel {
-  final String  image, name;
+  final String image, name;
 
   AreasModel({
     required this.image,

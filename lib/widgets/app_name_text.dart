@@ -9,10 +9,10 @@ class AppNameTextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
       period: const Duration(seconds: 10),
-      baseColor: Colors.purple,
+      baseColor: Colors.deepPurpleAccent,
       highlightColor: Colors.red,
       child: TitlesTextWidget(
-        label: "تسوق",
+        label: "دُلََني",
         fontSize: fontSize,
       ),
     );

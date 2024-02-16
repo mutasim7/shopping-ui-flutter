@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-
 import 'package:shopping_app/screens/stores_screen.dart';
 import 'package:shopping_app/widgets/subtitle_text.dart';
 
@@ -12,14 +10,13 @@ class CategoryRoundedWidget extends StatelessWidget {
     required this.passedArea,
   });
 
-  final String image, name,passedArea;
+  final String image, name, passedArea;
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> arguments = {
-  'name': name,
-  'areastor': passedArea,
-  
-};
+      'name': name,
+      'areastor': passedArea,
+    };
 
     return GestureDetector(
       onTap: () {

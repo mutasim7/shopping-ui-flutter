@@ -1,13 +1,14 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping_app/providers/auth_provider.dart';
+import 'package:shopping_app/providers/cart_provider.dart';
 import 'package:shopping_app/screens/auth/login.dart';
 import 'package:shopping_app/screens/inner_screens/orders/orders_screen.dart';
-import 'package:shopping_app/screens/inner_screens/wishlist.dart';
 import 'package:shopping_app/services/my_app_method.dart';
 import 'package:shopping_app/widgets/app_name_text.dart';
 import 'package:shopping_app/widgets/subtitle_text.dart';
@@ -24,6 +25,13 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  void initState() {
+    MyAppMethods.onbackgroundclick(context);
+    // TODO: implement initState
+    super.initState();
+  }
+
   // Map<String, dynamic> userData = {};
   // @override
   // void initState() {
@@ -65,14 +73,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
 
     return Scaffold(
         appBar: AppBar(
-          title: const AppNameTextWidget(fontSize: 20),
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset(AssetsManager.shoppingCart),
-          ),
+          actions: [
+            const Padding(
+              padding: EdgeInsets.only(top: 5, right: 5),
+              child: AppNameTextWidget(fontSize: 30),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(AssetsManager.shoppingCart),
+            ),
+          ],
         ),
         body: FutureBuilder<Map<String, dynamic>>(
             // تمرير الـ Future لـ FutureBuilder
@@ -90,10 +104,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
+                          // isLoading
+                          //     ? Center(
+                          //         child:
+                          //             CircularProgressIndicator()) // عرض مؤشر التحميل
+                          //     :
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              TitlesTextWidget(label: snapshot.data!["name"]),
+                              SubtitleTextWidget(
+                                  label: snapshot.data!["email"]),
+                            ],
+                          ),
+                          const SizedBox(
+                            width: 7,
+                          ),
                           Container(
                             height: 60,
                             width: 60,
@@ -112,22 +146,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            width: 7,
-                          ),
-                          // isLoading
-                          //     ? Center(
-                          //         child:
-                          //             CircularProgressIndicator()) // عرض مؤشر التحميل
-                          //     :
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TitlesTextWidget(label: snapshot.data!["name"]),
-                              SubtitleTextWidget(
-                                  label: snapshot.data!["email"]),
-                            ],
-                          ),
                         ],
                       ),
                     ),
@@ -137,12 +155,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         vertical: 24,
                       ),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          const TitlesTextWidget(label: "General"),
+                          const TitlesTextWidget(
+                            label: "عام",
+                            fontSize: 25,
+                          ),
                           CustomListTile(
                             imagePath: AssetsManager.orderSvg,
-                            text: "All orders",
+                            text: "كل الطلبات",
                             function: () async {
                               await Navigator.pushNamed(
                                 context,
@@ -150,16 +171,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               );
                             },
                           ),
-                          CustomListTile(
-                            imagePath: AssetsManager.wishlistSvg,
-                            text: "Wishlist",
-                            function: () async {
-                              await Navigator.pushNamed(
-                                context,
-                                WishlistScreen.routName,
-                              );
-                            },
-                          ),
+
                           // CustomListTile(
                           //   imagePath: AssetsManager.recent,
                           //   text: "Viewed recently",
@@ -175,22 +187,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             thickness: 1,
                           ),
 
-                          const TitlesTextWidget(label: "Settings"),
+                          const TitlesTextWidget(label: "إعدادات"),
                           const SizedBox(
                             height: 7,
                           ),
                           SwitchListTile(
+                            title: Text(
+                                textAlign: TextAlign.right,
+                                themeProvider.getIsDarkTheme
+                                    ? "الوضع الداكن"
+                                    : "الوضع الفاتح"),
                             secondary: Image.asset(
                               AssetsManager.theme,
                               height: 30,
                             ),
-                            title: Text(themeProvider.getIsDarkTheme
-                                ? "Dark mode"
-                                : "Light mode"),
                             value: themeProvider.getIsDarkTheme,
                             onChanged: (value) {
                               themeProvider.setDarkTheme(themeValue: value);
                             },
+                            controlAffinity: ListTileControlAffinity.leading,
                           ),
                           const Divider(
                             thickness: 1,
@@ -201,27 +216,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Center(
                       child: ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
+                          backgroundColor: Colors.deepPurpleAccent,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
                               30,
                             ),
                           ),
                         ),
-                        icon: const Icon(Icons.login),
+                        icon: const Icon(Icons.login, color: Colors.white),
                         label: const Text(
-                          "تسجيل خروج",
+                          "تسجيل الخروج",
+                          style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
                         onPressed: () async {
                           await MyAppMethods.showErrorORWarningDialog(
                               context: context,
-                              subtitle: "هل تريد تسجيل الخروج خقاً",
+                              subtitle: "هل تريد تسجيل الخروج حقاً",
                               fct: () async {
+                                FirebaseMessaging.instance
+                                    .unsubscribeFromTopic('stores');
+
                                 await authProvider.removeData();
+
                                 Navigator.pushNamed(
                                   context,
                                   LoginScreen.routName,
                                 );
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+                                int userId = prefs.getInt("id") ?? 0;
+                                await cartProvider.fetchCart(userId.toString());
                               },
                               isError: false);
                         },
@@ -248,12 +272,16 @@ class CustomListTile extends StatelessWidget {
       onTap: () {
         function();
       },
-      leading: Image.asset(
+      leading: const Icon(IconlyLight.arrowLeft2),
+      title: Text(
+        textAlign: TextAlign.right,
+        text,
+        style: const TextStyle(fontSize: 18),
+      ),
+      trailing: Image.asset(
         imagePath,
         height: 30,
       ),
-      title: SubtitleTextWidget(label: text),
-      trailing: const Icon(IconlyLight.arrowRight2),
     );
   }
 }

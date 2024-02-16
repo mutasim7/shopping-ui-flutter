@@ -2,14 +2,17 @@
 
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shopping_app/Root_App_Screen.dart';
 import 'package:shopping_app/consts/my_validators.dart';
 import 'package:shopping_app/models/user_model.dart';
 import 'package:shopping_app/providers/auth_provider.dart';
-import 'package:shopping_app/root_screen.dart';
+import 'package:shopping_app/providers/cart_provider.dart';
 import 'package:shopping_app/screens/auth/login.dart';
 import 'package:shopping_app/services/auth_services.dart';
 import 'package:shopping_app/widgets/app_name_text.dart';
@@ -64,6 +67,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
+    final cartProvider = Provider.of<CartProvider>(context);
+
     Future<UserModel?> sendDataRegisterToLaravelAPI(
       Map<String, dynamic> data,
     ) async {
@@ -85,6 +90,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
           );
 
           if (response.statusCode == 200) {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            int userId = prefs.getInt("id") ?? 0;
+            await cartProvider.clearLocalCart(userid: userId);
+            FirebaseMessaging.instance.subscribeToTopic('users');
             setState(() {
               isLoading = false;
             });
@@ -94,15 +103,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
             authProvider.getuserdata(token);
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                builder: (context) => const RootScreen(),
+                builder: (context) =>  RootAppScreen(),
               ),
               (route) => false,
+            );
+          } else if (response.statusCode == 302) {
+            setState(() {
+              isLoading = false;
+            });
+            // final jsonData = json.decode(response.body);
+
+            // String errorMessage = jsonData['message']['errors'];
+            // print('حدثت مشكلة: $errorMessage');
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Center(
+                  child: Text(
+                    "هذا البريد الإلكتروني مستخدم من قبل",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+                backgroundColor: Colors.red,
+              ),
             );
           } else {
             setState(() {
               isLoading = false; // تم إيقاف مؤشر التحميل بعد الانتهاء
             });
-            print('حدثت مشكلة: ${response.statusCode.toString()}');
+            print('حدثت مشكلة: ${response.statusCode}');
           }
         } catch (e) {
           setState(() {

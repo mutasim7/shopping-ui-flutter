@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "313707834611",
+    "project_id": "notiflutter-31aff",
+    "storage_bucket": "notiflutter-31aff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:313707834611:android:0ee6f66d145ce316c71b86",
+        "android_client_info": {
+          "package_name": "com.example.shopping_admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6CZlQ-MHA6wxf2Hl9Gw9Il9qY-ec6XWc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:313707834611:android:fe6923b2c838ea77c71b86",
+        "android_client_info": {
+          "package_name": "com.example.shopping_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6CZlQ-MHA6wxf2Hl9Gw9Il9qY-ec6XWc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:313707834611:android:14d742c3783db9bbc71b86",
+        "android_client_info": {
+          "package_name": "com.mutasim.shop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6CZlQ-MHA6wxf2Hl9Gw9Il9qY-ec6XWc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

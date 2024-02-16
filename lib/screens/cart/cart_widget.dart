@@ -1,16 +1,15 @@
-
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:provider/provider.dart';
 import 'package:shopping_app/screens/cart/quantity_btm_sheet.dart';
+import 'package:shopping_app/services/auth_services.dart';
 import 'package:shopping_app/widgets/subtitle_text.dart';
 import 'package:shopping_app/widgets/title_text.dart';
 
 import '../../models/cart_model.dart';
 import '../../providers/cart_provider.dart';
 import '../../providers/product_provider.dart';
-import '../../widgets/products/heart_btn.dart';
 
 class CartWidget extends StatelessWidget {
   const CartWidget({super.key});
@@ -31,58 +30,64 @@ class CartWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: FancyShimmerImage(
-                        imageUrl: getCurrProduct.productImage,
-                        height: size.height * 0.2,
-                        width: size.height * 0.2,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10.0,
-                    ),
                     IntrinsicWidth(
                       child: Column(
                         children: [
                           Row(
                             children: [
-                              SizedBox(
-                                width: size.width * 0.6,
-                                child: TitlesTextWidget(
-                                  label: getCurrProduct.productTitle,
-                                  maxLines: 2,
+                              IconButton(
+                                onPressed: () async {
+                                  await cartProvider.removeOneItem(
+                                    cartId: cartModelProvider.cartId.toString(),
+                                    productId:
+                                        getCurrProduct.productId.toString(),
+                                    // getCurrProduct.productId.toString(),
+                                  );
+                                },
+                                icon: const Icon(
+                                  Icons.clear,
+                                  color: Colors.red,
                                 ),
                               ),
-                              Column(
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      cartProvider.removeOneItem(
-                                        productId: getCurrProduct.productId,
-                                      );
-                                    },
-                                    icon: const Icon(
-                                      Icons.clear,
-                                      color: Colors.red,
-                                    ),
+                              SizedBox(
+                                width: size.width * 0.6,
+                                child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: TitlesTextWidget(
+                                    label: getCurrProduct.productTitle,
+                                    fontSize: 25,
+                                    maxLines: 2,
                                   ),
-                                  HeartButtonWidget(
-                                    productId: getCurrProduct.productId,
-                                  ),
-                                ],
+                                ),
                               ),
                             ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  getCurrProduct.productUnit,
+                                  style: const TextStyle(
+                                      fontSize: 25,
+                                      color: Colors.deepPurpleAccent),
+                                ),
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                const Text(
+                                  ": الوحدة",
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                           Row(
                             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SubtitleTextWidget(
-                                label: "${getCurrProduct.productPrice}\$",
-                                fontSize: 20,
-                                color: Colors.blue,
-                              ),
-                              const Spacer(),
                               OutlinedButton.icon(
                                 style: OutlinedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
@@ -90,7 +95,7 @@ class CartWidget extends StatelessWidget {
                                   ),
                                   side: const BorderSide(
                                     width: 2,
-                                    color: Colors.blue,
+                                    color: Colors.deepPurpleAccent,
                                   ),
                                 ),
                                 onPressed: () async {
@@ -107,19 +112,46 @@ class CartWidget extends StatelessWidget {
                                     builder: (context) {
                                       return QuantityBottomSheetWidget(
                                         cartModel: cartModelProvider,
+                                        unit: getCurrProduct.productUnit,
                                       );
                                     },
                                   );
                                 },
-                                icon: const Icon(IconlyLight.arrowDown2),
+                                icon: const Icon(
+                                  IconlyLight.arrowDown2,
+                                  color: Colors.deepPurpleAccent,
+                                ),
+                                label: Text(
+                                  "${cartModelProvider.quantity}:الكمية",
+                                  style: const TextStyle(
+                                      fontSize: 17,
+                                      color: Colors.deepPurpleAccent),
+                                ),
+                              ),
+                              const Spacer(),
+                              SubtitleTextWidget(
                                 label:
-                                    Text("Qty: ${cartModelProvider.quantity} "),
+                                    "${getCurrProduct.productPrice} ${getCurrProduct.productcurrencyType}",
+                                fontSize: 25,
+                                color: Colors.deepPurpleAccent,
                               ),
                             ],
                           )
                         ],
                       ),
-                    )
+                    ),
+                    const SizedBox(
+                      width: 10.0,
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: FancyShimmerImage(
+                        imageUrl: AuthServices.linkStorage +
+                            getCurrProduct.productImage,
+                        height: size.height * 0.2,
+                        width: size.height * 0.2,
+                      ),
+                    ),
                   ],
                 ),
               ),
